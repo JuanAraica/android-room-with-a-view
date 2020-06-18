@@ -19,10 +19,11 @@ package com.example.android.roomwordssample;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.Delete;
+import androidx.room.Update;
 import androidx.room.Query;
-
 import java.util.List;
-
+import androidx.room.OnConflictStrategy;
 /**
  * The Room Magic is in this file, where you map a Java method call to an SQL query.
  *
@@ -45,9 +46,13 @@ public interface WordDao {
     // We do not need a conflict strategy, because the word is our primary key, and you cannot
     // add two items with the same primary key to the database. If the table has more than one
     // column, you can use @Insert(onConflict = OnConflictStrategy.REPLACE) to update a row.
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Word word);
 
     @Query("DELETE FROM word_table")
     void deleteAll();
+    @Delete
+    void delete(Word word);
+    @Update
+    void update(Word word);
 }

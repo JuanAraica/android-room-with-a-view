@@ -52,8 +52,44 @@ class WordRepository {
     // Like this, Room ensures that you're not doing any long running operations on the main
     // thread, blocking the UI.
     void insert(Word word) {
+
         new insertAsyncTask(mWordDao).execute(word);
     }
+
+    void update(Word word) { new uptadeAsyncTask(mWordDao).execute(word); }
+    void deleteWord(Word word){new deleteWordAsyncTask(mWordDao).execute(word);}
+
+    private static class deleteWordAsyncTask extends AsyncTask<Word, Void, Void> {
+        private WordDao mAsyncTaskDao;
+
+        deleteWordAsyncTask(WordDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Word... params) {
+            mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+    private  static  class  uptadeAsyncTask extends  AsyncTask<Word, Void, Void>{
+        private  WordDao mAsyncTaskDao;
+
+        uptadeAsyncTask(WordDao dao){ mAsyncTaskDao = dao;}
+        @Override
+        protected Void doInBackground(Word... words) {
+            mAsyncTaskDao.update(words[0]);
+            return null;
+        }
+    }
+
+
+
+
+
+
+
 
     private static class insertAsyncTask extends AsyncTask<Word, Void, Void> {
 
